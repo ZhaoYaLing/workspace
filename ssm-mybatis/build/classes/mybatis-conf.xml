@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- mybatis核心配置文件 -->
+<configuration>
+	<!-- 加载db.properties -->
+	<properties resource="db.properties">
+		<!-- 加载db.properties 法一-->
+		<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+		<property name="username" value="scott"/>
+		<property name="password" value="123456"/>
+	</properties>
+	<!-- 取别名 -->
+	<typeAliases>
+		<!-- 配置单个别名 -->
+		<!-- <typeAlias type="org.lanqiao.entity.Dept" alias="Dept"/> -->
+		<!-- 批量配置别名：默认名称为类名（大小写都可以） -->
+		<package name="org.lanqiao.entity"/>
+	</typeAliases>
+	<plugins >
+		<plugin interceptor="com.github.pagehelper.PageHelper"></plugin><!-- 分页插件 -->
+	</plugins>
+	<environments default="developer">
+		<environment id="developer">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<!-- 加载db.properties 法二-->
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<!-- 配置mybatis的 映射文件-->
+		<mapper resource="deptmapper.xml"/>
+		<mapper resource="DeptMapping.xml"/>
+		<!-- 针对代理模式，class:mapper接口（全路径），此种方式要求映射文件和mapper接口名称相同且在一个包下 -->
+		<mapper class="org.lanqiao.mapper.EmpMapper"/>
+		<!--包扫描  <package name="org.lanqiao.mapper"/> -->
+	</mappers>
+	
+</configuration>
